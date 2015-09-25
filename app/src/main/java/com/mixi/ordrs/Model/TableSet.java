@@ -7,20 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Tables {
-    private static Tables sTables;
+public class TableSet {
+    private static TableSet sTableSet;
 
     private List<Table> mTables;
 
-    public static Tables get (Context context) {
-        if (sTables == null) {
-            sTables = new Tables(context);
+    public static TableSet get (Context context) {
+        if (sTableSet == null) {
+            sTableSet = new TableSet(context);
         }
 
-        return sTables;
+        return sTableSet;
     }
 
-    private Tables (Context context) {
+    private TableSet(Context context) {
         mTables = new ArrayList<>();
     }
 
