@@ -90,6 +90,19 @@ public class TableListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    public void addTable() {
+        System.out.println("Entramos!!");
+        TableSet tableSet = TableSet.get(getActivity());
+        int tableNumber = tableSet.getTables().size()+1;
+        /*if (tableSet.getTables().size() != null) {
+            tableNumber =
+        }*/
+        Table table = new Table();
+        table.setName("Table number " + Integer.toString(tableNumber));
+        tableSet.addTable(table);
+        updateUI();
+    }
+
     private void updateUI() {
         TableSet tableSet = TableSet.get(getActivity());
         List<Table> tables = tableSet.getTables();
@@ -108,23 +121,17 @@ public class TableListFragment extends Fragment {
 
         private Table mTable;
 
-        private TextView mTitleTextView;
-        private TextView mDateTextView;
-        private CheckBox mSolvedCheckBox;
+        private TextView mNameTextView;
 
         public TableHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            //mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_crime_title_text_view);
-            //mDateTextView = (TextView) itemView.findViewById(R.id.list_item_crime_date_text_view);
-            //mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_crime_solved_check_box);
+            mNameTextView = (TextView) itemView;
         }
 
         public void bindTable(Table table) {
             mTable = table;
-            mTitleTextView.setText(mTable.getName());
-            //mDateTextView.setText(mTable.getDate().toString());
-            //mSolvedCheckBox.setChecked(mTable.isSolved());
+            mNameTextView.setText(mTable.getName());
         }
 
         @Override
