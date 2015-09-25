@@ -6,13 +6,13 @@ public class Dish {
 
     private int mId;
     private String mName;
-    private float mPrice;
+    private double mPrice;
     private String mImageUrl;
     private List<String> mIngredients;
     private List<Allergen> mAllergens;
     private String mRequest;
 
-    public Dish(int id, String name, float price, String imageUrl, List<String> ingredients, List<Allergen> allergens) {
+    public Dish(int id, String name, double price, String imageUrl, List<String> ingredients, List<Allergen> allergens) {
         mId = id;
         mName = name;
         mPrice = price;
@@ -33,7 +33,7 @@ public class Dish {
         return mName;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return mPrice;
     }
 

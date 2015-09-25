@@ -1,6 +1,5 @@
 package com.mixi.ordrs.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,22 +13,41 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.mixi.ordrs.Activity.DishListActivity;
+import com.mixi.ordrs.Model.Allergen;
+import com.mixi.ordrs.Model.Dish;
 import com.mixi.ordrs.Model.Table;
 import com.mixi.ordrs.Model.TableSet;
 import com.mixi.ordrs.R;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class TableListFragment extends Fragment {
+public class DishListFragment extends Fragment {
 
+    private static final String ARG_TABLE_ID = "table_id";
+
+    private Table mTable;
     private RecyclerView mTableRecyclerView;
-    private TableAdapter mAdapter;
+    private DishAdapter mAdapter;
+
+    public static DishListFragment newInstance (UUID tableId) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_TABLE_ID, tableId);
+
+        DishListFragment fragment = new DishListFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+
+        UUID tableId = (UUID) getArguments().getSerializable(ARG_TABLE_ID);
+        mTable = TableSet.get(getActivity()).getTable(tableId);
     }
 
     @Nullable
@@ -91,22 +109,16 @@ public class TableListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addTable() {
-        TableSet tableSet = TableSet.get(getActivity());
-        int tableNumber = tableSet.getTables().size()+1;
-
-        Table table = new Table();
-        table.setName("Table number " + Integer.toString(tableNumber));
-        tableSet.addTable(table);
+    public void addDish() {
+        mTable.addDish(createFakeDish());
         updateUI();
     }
 
     private void updateUI() {
-        TableSet tableSet = TableSet.get(getActivity());
-        List<Table> tables = tableSet.getTables();
+        List<Dish> dishes = mTable.getDishes();
 
         if (mAdapter == null) {
-            mAdapter = new TableAdapter(tables);
+            mAdapter = new DishAdapter(dishes);
             mTableRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.notifyDataSetChanged();
@@ -114,56 +126,77 @@ public class TableListFragment extends Fragment {
 
         //updateSubtitle();
     }
+    
+    private Dish createFakeDish() {
 
-    private class TableHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        int dishNumber = mTable.getDishes().size()+1;
+        List<String> ingredients = new ArrayList<>();
+        for (int i = 0; i < ThreadLocalRandom.current().nextInt(3, 7 + 1); i++) {
+            ingredients.add("Ingrediente "+Integer.toString(i));
+        }
 
-        private Table mTable;
+        List<Allergen> allergens = new ArrayList<>();
+        for (int i = 0; i < ThreadLocalRandom.current().nextInt(0, 3 + 1); i++) {
+            Allergen allergen = new Allergen(i, "Allergen "+Integer.toString(i));
+            allergens.add(allergen);
+        }
+
+        ingredients.add("Ingrediente 1");
+        Dish dish = new Dish(dishNumber,
+                "Plato "+Integer.toString(dishNumber),
+                15.0, "url", ingredients, allergens);
+
+        return dish;
+    }
+
+    private class DishHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private Dish mDish;
 
         private TextView mNameTextView;
 
-        public TableHolder(View itemView) {
+        public DishHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             mNameTextView = (TextView) itemView;
         }
 
-        public void bindTable(Table table) {
-            mTable = table;
-            mNameTextView.setText(mTable.getName());
+        public void bindDish(Dish dish) {
+            mDish = dish;
+            mNameTextView.setText(mDish.getName());
         }
 
         @Override
         public void onClick(View v) {
-            Intent intent = DishListActivity.newIntent(getActivity(), mTable.getId());
-            startActivity(intent);
+            //Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
+            //startActivity(intent);
         }
     }
 
-    private class TableAdapter extends RecyclerView.Adapter<TableHolder> {
+    private class DishAdapter extends RecyclerView.Adapter<DishHolder> {
 
-        private List<Table> mTables;
+        private List<Dish> mDishes;
 
-        public TableAdapter(List<Table> tables) {
-            mTables = tables;
+        public DishAdapter(List<Dish> dishes) {
+            mDishes = dishes;
         }
 
         @Override
-        public TableHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public DishHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            //View view = layoutInflater.inflate(R.layout.list_item_crime, parent, false);
             View view = layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-            return new TableHolder(view);
+            return new DishHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(TableHolder holder, int position) {
-            Table table = mTables.get(position);
-            holder.bindTable(table);
+        public void onBindViewHolder(DishHolder holder, int position) {
+            Dish dish = mDishes.get(position);
+            holder.bindDish(dish);
         }
 
         @Override
         public int getItemCount() {
-            return mTables.size();
+            return mDishes.size();
         }
     }
 }
