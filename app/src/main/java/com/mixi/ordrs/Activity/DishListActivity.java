@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.mixi.ordrs.Fragment.DishListFragment;
-import com.mixi.ordrs.Fragment.TableListFragment;
 import com.mixi.ordrs.Model.Table;
 import com.mixi.ordrs.Model.TableSet;
 import com.mixi.ordrs.R;

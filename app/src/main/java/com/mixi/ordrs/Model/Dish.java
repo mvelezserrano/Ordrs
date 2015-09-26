@@ -12,12 +12,38 @@ public class Dish {
     private List<Allergen> mAllergens;
     private String mRequest;
 
+    public Dish() {};
+
     public Dish(int id, String name, double price, String imageUrl, List<String> ingredients, List<Allergen> allergens) {
         mId = id;
         mName = name;
         mPrice = price;
         mImageUrl = imageUrl;
         mIngredients = ingredients;
+        mAllergens = allergens;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
+
+    public void setName(String name) {
+        mName = name;
+    }
+
+    public void setPrice(double price) {
+        mPrice = price;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        mImageUrl = imageUrl;
+    }
+
+    public void setIngredients(List<String> ingredients) {
+        mIngredients = ingredients;
+    }
+
+    public void setAllergens(List<Allergen> allergens) {
         mAllergens = allergens;
     }
 

@@ -2,6 +2,7 @@ package com.mixi.ordrs.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.mixi.ordrs.Model.Allergen;
 import com.mixi.ordrs.Model.Dish;
+import com.mixi.ordrs.Model.MenuList;
 import com.mixi.ordrs.Model.Table;
 import com.mixi.ordrs.Model.TableSet;
 import com.mixi.ordrs.R;
@@ -28,9 +30,12 @@ public class DishListFragment extends Fragment {
 
     private static final String ARG_TABLE_ID = "table_id";
 
+    private MenuList mMenuList;
     private Table mTable;
     private RecyclerView mTableRecyclerView;
     private DishAdapter mAdapter;
+
+    private FloatingActionButton mAddCityButton;
 
     public static DishListFragment newInstance (UUID tableId) {
         Bundle args = new Bundle();
@@ -48,6 +53,8 @@ public class DishListFragment extends Fragment {
 
         UUID tableId = (UUID) getArguments().getSerializable(ARG_TABLE_ID);
         mTable = TableSet.get(getActivity()).getTable(tableId);
+
+
     }
 
     @Nullable
@@ -56,6 +63,8 @@ public class DishListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_table_list, container, false);
         mTableRecyclerView = (RecyclerView) view.findViewById(R.id.table_recycler_view);
         mTableRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mMenuList = MenuList.get(getActivity());
 
         updateUI();
 
@@ -122,6 +131,13 @@ public class DishListFragment extends Fragment {
             mTableRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.notifyDataSetChanged();
+        }
+
+        mAddCityButton = (FloatingActionButton) getActivity().findViewById(R.id.add_button);
+        if (!mMenuList.isMenuDownloaded()) {
+            mAddCityButton.setVisibility(View.INVISIBLE);
+        } else {
+            mAddCityButton.setVisibility(View.VISIBLE);
         }
 
         //updateSubtitle();

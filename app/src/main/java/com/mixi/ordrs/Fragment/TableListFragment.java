@@ -1,7 +1,9 @@
 package com.mixi.ordrs.Fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mixi.ordrs.Activity.DishListActivity;
+import com.mixi.ordrs.Model.Dish;
+import com.mixi.ordrs.Model.DishFetchr;
+import com.mixi.ordrs.Model.MenuList;
 import com.mixi.ordrs.Model.Table;
 import com.mixi.ordrs.Model.TableSet;
 import com.mixi.ordrs.R;
@@ -23,6 +28,8 @@ import java.util.List;
 
 public class TableListFragment extends Fragment {
 
+
+
     private RecyclerView mTableRecyclerView;
     private TableAdapter mAdapter;
 
@@ -30,6 +37,7 @@ public class TableListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        new FetchDishesTask().execute();
     }
 
     @Nullable
@@ -113,6 +121,30 @@ public class TableListFragment extends Fragment {
         }
 
         //updateSubtitle();
+    }
+
+    private class FetchDishesTask extends AsyncTask<Void, Void, List<Dish>> {
+
+        @Override
+        protected List<Dish> doInBackground(Void... params) {
+            return new DishFetchr().fetchDishes();
+        }
+
+        @Override
+        protected void onPostExecute(List<Dish> dishes) {
+
+            MenuList menuList = MenuList.get(getActivity());
+            menuList.setDishes(dishes);
+
+            Handler showAddButton = new Handler();
+            showAddButton.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    MenuList menuList = MenuList.get(getActivity());
+                    menuList.setMenuDownloaded(true);
+                }
+            }, 5000);
+        }
     }
 
     private class TableHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
