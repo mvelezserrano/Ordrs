@@ -31,9 +31,7 @@ public class DishListActivity extends SingleFragmentActivity {
 
     @Override
     protected void addNewElement() {
-        Toast toast = Toast.makeText(this, "Añadir Plato!!!", Toast.LENGTH_SHORT);
-        toast.show();
-        DishListFragment fragment = (DishListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        fragment.addDish();
+        Intent intent = new Intent(this, MenuListActivity.class);
+        startActivity(intent);
     }
 }

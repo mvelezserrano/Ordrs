@@ -65,8 +65,8 @@ public class TableListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_table_list, container, false);
-        mTableRecyclerView = (RecyclerView) view.findViewById(R.id.table_recycler_view);
+        View view = inflater.inflate(R.layout.fragment_recyclerview_list, container, false);
+        mTableRecyclerView = (RecyclerView) view.findViewById(R.id.list_recycler_view);
         mTableRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAddTableButton = (FloatingActionButton) getActivity().findViewById(R.id.add_button);

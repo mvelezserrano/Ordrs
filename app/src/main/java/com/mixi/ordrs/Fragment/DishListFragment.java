@@ -2,7 +2,6 @@ package com.mixi.ordrs.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.mixi.ordrs.Model.Allergen;
 import com.mixi.ordrs.Model.Dish;
-import com.mixi.ordrs.Model.MenuList;
 import com.mixi.ordrs.Model.Table;
 import com.mixi.ordrs.Model.TableSet;
 import com.mixi.ordrs.R;
@@ -185,7 +183,7 @@ public class DishListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            //Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
+            //Intent intent = new Intent(getActivity(), MenuListActivity.class);
             //startActivity(intent);
         }
     }

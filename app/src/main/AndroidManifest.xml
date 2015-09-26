@@ -19,6 +19,10 @@
             android:name=".Activity.DishListActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name=".Activity.MenuListActivity"
+            android:label="@string/app_name" >
+        </activity>
 
     </application>
 
