@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/fragment_container"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/coordinator">
+    <FrameLayout android:id="@+id/fragment_container"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent">
+    </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_button"
@@ -14,5 +19,4 @@
         app:elevation="10dp"
         android:layout_margin="10dp"
         android:layout_gravity="bottom|right"/>
-
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,10 +1,13 @@
 package com.mixi.ordrs.Fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,10 +31,29 @@ import java.util.List;
 
 public class TableListFragment extends Fragment {
 
-
+    OnMenuListDownloaded mCallback;
+    private FloatingActionButton mAddTableButton;
 
     private RecyclerView mTableRecyclerView;
     private TableAdapter mAdapter;
+
+    public interface OnMenuListDownloaded {
+        public void menuListHasDownloaded();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnMenuListDownloaded) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +68,9 @@ public class TableListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_table_list, container, false);
         mTableRecyclerView = (RecyclerView) view.findViewById(R.id.table_recycler_view);
         mTableRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mAddTableButton = (FloatingActionButton) getActivity().findViewById(R.id.add_button);
+        mAddTableButton.setVisibility(View.INVISIBLE);
 
         updateUI();
 
@@ -135,15 +160,18 @@ public class TableListFragment extends Fragment {
 
             MenuList menuList = MenuList.get(getActivity());
             menuList.setDishes(dishes);
-
+            menuList.setMenuDownloaded(true);
+            mCallback.menuListHasDownloaded();
+            /*
             Handler showAddButton = new Handler();
             showAddButton.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     MenuList menuList = MenuList.get(getActivity());
                     menuList.setMenuDownloaded(true);
+                    mCallback.menuListHasDownloaded();
                 }
-            }, 5000);
+            }, 5000);*/
         }
     }
 

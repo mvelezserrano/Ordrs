@@ -30,12 +30,12 @@ public class DishListFragment extends Fragment {
 
     private static final String ARG_TABLE_ID = "table_id";
 
-    private MenuList mMenuList;
+    //private MenuList mMenuList;
     private Table mTable;
     private RecyclerView mTableRecyclerView;
     private DishAdapter mAdapter;
 
-    private FloatingActionButton mAddCityButton;
+    //private FloatingActionButton mAddCityButton;
 
     public static DishListFragment newInstance (UUID tableId) {
         Bundle args = new Bundle();
@@ -64,7 +64,7 @@ public class DishListFragment extends Fragment {
         mTableRecyclerView = (RecyclerView) view.findViewById(R.id.table_recycler_view);
         mTableRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mMenuList = MenuList.get(getActivity());
+        //mMenuList = MenuList.get(getActivity());
 
         updateUI();
 
@@ -123,7 +123,7 @@ public class DishListFragment extends Fragment {
         updateUI();
     }
 
-    private void updateUI() {
+    public void updateUI() {
         List<Dish> dishes = mTable.getDishes();
 
         if (mAdapter == null) {
@@ -133,12 +133,13 @@ public class DishListFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
         }
 
+        /*
         mAddCityButton = (FloatingActionButton) getActivity().findViewById(R.id.add_button);
         if (!mMenuList.isMenuDownloaded()) {
             mAddCityButton.setVisibility(View.INVISIBLE);
         } else {
             mAddCityButton.setVisibility(View.VISIBLE);
-        }
+        }*/
 
         //updateSubtitle();
     }
