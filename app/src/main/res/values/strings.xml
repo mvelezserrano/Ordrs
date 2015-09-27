@@ -8,4 +8,6 @@
     <string name="dish_name_and_price_separator_text">Name and price</string>
     <string name="add_to_order_button">Add to order</string>
     <string name="remove_from_order_button">Remove from order</string>
+    <string name="get_bill">Get Bill</string>
+    <string name="bill_dialog_title">To Pay:</string>
 </resources>
