@@ -1,5 +1,7 @@
 package com.mixi.ordrs.Fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,8 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mixi.ordrs.Activity.DishListActivity;
+import com.mixi.ordrs.Activity.MenuDishPagerActivity;
+import com.mixi.ordrs.Activity.TableDishPagerActivity;
 import com.mixi.ordrs.Model.Allergen;
 import com.mixi.ordrs.Model.Dish;
+import com.mixi.ordrs.Model.Dishtable;
+import com.mixi.ordrs.Model.MenuList;
 import com.mixi.ordrs.Model.Table;
 import com.mixi.ordrs.Model.TableSet;
 import com.mixi.ordrs.R;
@@ -27,6 +34,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class DishListFragment extends Fragment {
 
     private static final String ARG_TABLE_ID = "table_id";
+    private static final int REQUEST_TABLE_DISH = 2;
 
     //private MenuList mMenuList;
     private Table mTable;
@@ -51,8 +59,6 @@ public class DishListFragment extends Fragment {
 
         UUID tableId = (UUID) getArguments().getSerializable(ARG_TABLE_ID);
         mTable = TableSet.get(getActivity()).getTable(tableId);
-
-
     }
 
     @Nullable
@@ -116,13 +122,21 @@ public class DishListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addDish() {
-        mTable.addDish(createFakeDish());
+    public void addDish(int dishId, String request) {
+        MenuList menuList = MenuList.get(getActivity());
+        Dishtable dishtable = new Dishtable(menuList.getDish(dishId));
+        dishtable.setRequest(request);
+        mTable.addDish(dishtable);
+        updateUI();
+    }
+
+    public void removeDish(int dishId) {
+        mTable.removeDish(dishId);
         updateUI();
     }
 
     public void updateUI() {
-        List<Dish> dishes = mTable.getDishes();
+        List<Dishtable> dishes = mTable.getDishes();
 
         if (mAdapter == null) {
             mAdapter = new DishAdapter(dishes);
@@ -140,28 +154,6 @@ public class DishListFragment extends Fragment {
         }*/
 
         //updateSubtitle();
-    }
-    
-    private Dish createFakeDish() {
-
-        int dishNumber = mTable.getDishes().size()+1;
-        List<String> ingredients = new ArrayList<>();
-        for (int i = 0; i < ThreadLocalRandom.current().nextInt(3, 7 + 1); i++) {
-            ingredients.add("Ingrediente "+Integer.toString(i));
-        }
-
-        List<Allergen> allergens = new ArrayList<>();
-        for (int i = 0; i < ThreadLocalRandom.current().nextInt(0, 3 + 1); i++) {
-            Allergen allergen = new Allergen(i, "Allergen "+Integer.toString(i));
-            allergens.add(allergen);
-        }
-
-        ingredients.add("Ingrediente 1");
-        Dish dish = new Dish(dishNumber,
-                "Plato "+Integer.toString(dishNumber),
-                15.0, "url", ingredients, allergens);
-
-        return dish;
     }
 
     private class DishHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -183,16 +175,16 @@ public class DishListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            //Intent intent = new Intent(getActivity(), MenuListActivity.class);
-            //startActivity(intent);
+            Intent intent = TableDishPagerActivity.newIntent(getActivity(), mTable.getId(), mDish.getId());
+            getActivity().startActivityForResult(intent, DishListActivity.REQUEST_TABLE_DISH);
         }
     }
 
     private class DishAdapter extends RecyclerView.Adapter<DishHolder> {
 
-        private List<Dish> mDishes;
+        private List<Dishtable> mDishes;
 
-        public DishAdapter(List<Dish> dishes) {
+        public DishAdapter(List<Dishtable> dishes) {
             mDishes = dishes;
         }
 

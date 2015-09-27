@@ -7,4 +7,5 @@
     <string name="dish_requests_hint">Enter customer requests</string>
     <string name="dish_name_and_price_separator_text">Name and price</string>
     <string name="add_to_order_button">Add to order</string>
+    <string name="remove_from_order_button">Remove from order</string>
 </resources>

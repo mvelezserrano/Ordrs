@@ -94,8 +94,6 @@ public class DishFetchr {
             }
             dish.setAllergens(allergensList);
 
-            dish.setRequest("");
-
             dishes.add(dish);
         }
     }

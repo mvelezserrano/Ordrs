@@ -10,7 +10,7 @@ public class Dish {
     private String mImageUrl;
     private List<String> mIngredients;
     private List<Allergen> mAllergens;
-    private String mRequest;
+    //private String mRequest;
 
     public Dish() {};
 
@@ -47,9 +47,9 @@ public class Dish {
         mAllergens = allergens;
     }
 
-    public void setRequest(String request) {
+    /*public void setRequest(String request) {
         mRequest = request;
-    }
+    }*/
 
     public int getId() {
         return mId;
@@ -75,7 +75,7 @@ public class Dish {
         return mAllergens;
     }
 
-    public String getRequest() {
+    /*public String getRequest() {
         return mRequest;
-    }
+    }*/
 }

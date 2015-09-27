@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +18,22 @@ import android.widget.TextView;
 import com.mixi.ordrs.Model.Allergen;
 import com.mixi.ordrs.Model.Dish;
 import com.mixi.ordrs.Model.MenuList;
+import com.mixi.ordrs.Model.TableSet;
 import com.mixi.ordrs.R;
 
 import java.util.List;
+import java.util.UUID;
 
 public class DishFragment extends Fragment {
 
+    private static final String ARG_CUSTOMER_REQUEST = "customer_request";
     private static final String ARG_DISH_ID = "dish_id";
 
+    public static final String EXTRA_SELECTED_DISH_ID = "selected_dish_id";
+    public static final String EXTRA_REQUESTS = "request";
+
+    private static boolean newDish=true;
+    private List<Dish> mDishes;
     private Dish mDish;
 
     private TextView mNameTextView;
@@ -34,9 +44,27 @@ public class DishFragment extends Fragment {
     private EditText mRequestField;
     private Button mAddToOrderButton;
 
+    private String mCustomerRequest="";
+
     public static DishFragment newInstance(int dishId) {
         Bundle args = new Bundle();
         args.putInt(ARG_DISH_ID, dishId);
+
+        newDish=true;
+
+        DishFragment fragment = new DishFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    public static DishFragment newInstance(String request, int dishId) {
+
+        Bundle args = new Bundle();
+        args.putInt(ARG_DISH_ID, dishId);
+        args.putString(ARG_CUSTOMER_REQUEST, request);
+
+        newDish=false;
 
         DishFragment fragment = new DishFragment();
         fragment.setArguments(args);
@@ -50,6 +78,9 @@ public class DishFragment extends Fragment {
 
         int dishId = getArguments().getInt(ARG_DISH_ID, 0);
         mDish = MenuList.get(getActivity()).getDish(dishId);
+        if (!newDish) {
+            mCustomerRequest = getArguments().getString(ARG_CUSTOMER_REQUEST);
+        }
     }
 
     @Nullable
@@ -90,7 +121,11 @@ public class DishFragment extends Fragment {
             }
         }
         mAllergensTextView.setText(allergenListBuilder.toString());
-        /*mTitleField.addTextChangedListener(new TextWatcher() {
+
+
+        mRequestField = (EditText) v.findViewById(R.id.dish_customer_request);
+        mRequestField.setText(mCustomerRequest);
+        mRequestField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // This space intentionally left blank
@@ -98,39 +133,36 @@ public class DishFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mCrime.setTitle(s.toString());
+                mCustomerRequest=s.toString();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 // This one too
             }
-        });*/
+        });
 
         mAddToOrderButton = (Button) v.findViewById(R.id.add_dish_to_order);
+        if (!newDish) {
+            mAddToOrderButton.setText(R.string.remove_from_order_button);
+        } else {
+            mAddToOrderButton.setText(R.string.add_to_order_button);
+        }
         mAddToOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*FragmentManager manager = getFragmentManager();
-                DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
-                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
-                dialog.show(manager, DIALOG_DATE);*/
+                returnResult();
             }
         });
 
         return v;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-
-        /*if (requestCode == REQUEST_DATE) {
-            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-            mCrime.setDate(date);
-            updateDate();
-        }*/
+    public void returnResult() {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_SELECTED_DISH_ID, mDish.getId());
+        intent.putExtra(EXTRA_REQUESTS, mCustomerRequest);
+        getActivity().setResult(Activity.RESULT_OK, intent);
+        getActivity().finish();
     }
 }

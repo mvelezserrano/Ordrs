@@ -24,7 +24,11 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".Activity.DishPagerActivity"
+            android:name=".Activity.MenuDishPagerActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".Activity.TableDishPagerActivity"
             android:label="@string/app_name" >
         </activity>
 

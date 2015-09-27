@@ -8,7 +8,7 @@ public class Table {
 
     private UUID mId;
     private String mName;
-    private List<Dish> mDishes;
+    private List<Dishtable> mDishes;
 
     public Table() {
         mId = UUID.randomUUID();
@@ -27,16 +27,24 @@ public class Table {
         mName = name;
     }
 
-    public void addDish (Dish d) {
+    public void addDish (Dishtable d) {
         mDishes.add(d);
     }
 
-    public List<Dish> getDishes() {
+    public void removeDish (int id) {
+        for (Dishtable dish: mDishes) {
+            if (dish.getId() == id) {
+                mDishes.remove(dish);
+            }
+        }
+    }
+
+    public List<Dishtable> getDishes() {
         return mDishes;
     }
 
-    public Dish getDish (int id) {
-        for (Dish dish: mDishes) {
+    public Dishtable getDish (int id) {
+        for (Dishtable dish: mDishes) {
             if (dish.getId() == id) {
                 return dish;
             }

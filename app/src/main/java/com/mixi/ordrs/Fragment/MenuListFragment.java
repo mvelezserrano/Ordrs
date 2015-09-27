@@ -1,5 +1,6 @@
 package com.mixi.ordrs.Fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.mixi.ordrs.Activity.DishPagerActivity;
+import com.mixi.ordrs.Activity.MenuDishPagerActivity;
 import com.mixi.ordrs.Model.Dish;
 import com.mixi.ordrs.Model.MenuList;
 import com.mixi.ordrs.R;
@@ -23,6 +24,8 @@ import com.mixi.ordrs.R;
 import java.util.List;
 
 public class MenuListFragment extends Fragment {
+
+    private static final int REQUEST_DISH = 1;
 
     private RecyclerView mMenuListRecyclerView;
     private MenuListAdapter mAdapter;
@@ -120,8 +123,17 @@ public class MenuListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = DishPagerActivity.newIntent(getActivity(), mDish.getId());
-            startActivity(intent);
+            Intent intent = MenuDishPagerActivity.newIntent(getActivity(), mDish.getId());
+            startActivityForResult(intent, REQUEST_DISH);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            System.out.println("Añadimos en MenuListFragment");
+            getActivity().setResult(Activity.RESULT_OK, data);
+            getActivity().finish();
         }
     }
 
