@@ -2,6 +2,7 @@ package com.mixi.ordrs.Fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -144,8 +145,10 @@ public class DishFragment extends Fragment {
 
         mAddToOrderButton = (Button) v.findViewById(R.id.add_dish_to_order);
         if (!newDish) {
+            mAddToOrderButton.setBackgroundColor(Color.rgb(231, 76, 60));
             mAddToOrderButton.setText(R.string.remove_from_order_button);
         } else {
+            mAddToOrderButton.setBackgroundColor(Color.rgb(39, 174, 96));
             mAddToOrderButton.setText(R.string.add_to_order_button);
         }
         mAddToOrderButton.setOnClickListener(new View.OnClickListener() {
