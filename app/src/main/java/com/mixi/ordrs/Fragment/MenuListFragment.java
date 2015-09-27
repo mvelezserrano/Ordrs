@@ -1,5 +1,6 @@
 package com.mixi.ordrs.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mixi.ordrs.Activity.DishPagerActivity;
 import com.mixi.ordrs.Model.Dish;
 import com.mixi.ordrs.Model.MenuList;
 import com.mixi.ordrs.R;
@@ -118,8 +120,8 @@ public class MenuListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            //Intent intent = DishListActivity.newIntent(getActivity(), mDish.getId());
-            //startActivity(intent);
+            Intent intent = DishPagerActivity.newIntent(getActivity(), mDish.getId());
+            startActivity(intent);
         }
     }
 

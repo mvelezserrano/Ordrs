@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Ordrs</string>
     <string name="menu_downloaded">Menu list downloaded!</string>
+    <string name="dish_ingredients_separator_text">Ingredients</string>
+    <string name="dish_allergens_separator_text">Allergens</string>
+    <string name="dish_requests_separator_text">Customer requests</string>
+    <string name="dish_requests_hint">Enter customer requests</string>
+    <string name="dish_name_and_price_separator_text">Name and price</string>
+    <string name="add_to_order_button">Add to order</string>
 </resources>
