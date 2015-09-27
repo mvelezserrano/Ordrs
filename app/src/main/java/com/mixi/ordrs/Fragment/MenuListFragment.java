@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mixi.ordrs.Activity.MenuDishPagerActivity;
+import com.mixi.ordrs.Model.Allergen;
 import com.mixi.ordrs.Model.Dish;
 import com.mixi.ordrs.Model.MenuList;
 import com.mixi.ordrs.R;
@@ -57,41 +58,6 @@ public class MenuListFragment extends Fragment {
         //outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        /*inflater.inflate(R.menu.fragment_crime_list, menu);
-
-        MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
-        if (mSubtitleVisible) {
-            subtitleItem.setTitle(R.string.hide_subtitle);
-        } else {
-            subtitleItem.setTitle(R.string.show_subtitle);
-        }*/
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        /*switch (item.getItemId()) {
-            case R.id.menu_item_new_crime:
-                Crime crime = new Crime();
-                CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-                startActivity(intent);
-                return true;
-
-            case R.id.menu_item_show_subtitle:
-                mSubtitleVisible = !mSubtitleVisible;
-                getActivity().invalidateOptionsMenu();
-                updateSubtitle();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }*/
-        return super.onOptionsItemSelected(item);
-    }
-
     private void updateUI() {
         MenuList menuList = MenuList.get(getActivity());
         List<Dish> menuDishes = menuList.getDishes();
@@ -108,17 +74,34 @@ public class MenuListFragment extends Fragment {
 
         private Dish mDish;
 
-        private TextView mNameTextView;
+        private TextView mDishNameTextView;
+        private TextView mDishAllergensTextView;
+        private TextView mDishPriceTextView;
 
         public MenuListHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mNameTextView = (TextView) itemView;
+            mDishNameTextView = (TextView) itemView.findViewById(R.id.list_item_dish_name);
+            mDishAllergensTextView = (TextView) itemView.findViewById(R.id.list_item_dish_allergens);
+            mDishPriceTextView = (TextView) itemView.findViewById(R.id.list_item_dish_price);
         }
 
         public void bindDish(Dish dish) {
             mDish = dish;
-            mNameTextView.setText(mDish.getName());
+            mDishNameTextView.setText(mDish.getName());
+            StringBuilder allergenListBuilder = new StringBuilder();
+            List<Allergen> allergenList = mDish.getAllergens();
+            int i=1;
+            for (Allergen allergen: allergenList) {
+                allergenListBuilder.append(allergen.getName());
+                if (i++ == allergenList.size()) {
+                    allergenListBuilder.append(".");
+                } else {
+                    allergenListBuilder.append(", ");
+                }
+            }
+            mDishAllergensTextView.setText(allergenListBuilder.toString());
+            mDishPriceTextView.setText(Double.toString(mDish.getPrice()) + " €");
         }
 
         @Override
@@ -148,8 +131,7 @@ public class MenuListFragment extends Fragment {
         @Override
         public MenuListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            //View view = layoutInflater.inflate(R.layout.list_item_crime, parent, false);
-            View view = layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            View view = layoutInflater.inflate(R.layout.list_item_dish, parent, false);
             return new MenuListHolder(view);
         }
 

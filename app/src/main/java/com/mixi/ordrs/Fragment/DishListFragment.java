@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.mixi.ordrs.Activity.DishListActivity;
 import com.mixi.ordrs.Activity.TableDishPagerActivity;
+import com.mixi.ordrs.Model.Allergen;
 import com.mixi.ordrs.Model.Dish;
 import com.mixi.ordrs.Model.Dishtable;
 import com.mixi.ordrs.Model.MenuList;
@@ -148,17 +149,35 @@ public class DishListFragment extends Fragment {
 
         private Dish mDish;
 
-        private TextView mNameTextView;
+        private TextView mDishNameTextView;
+        private TextView mDishAllergensTextView;
+        private TextView mDishPriceTextView;
+
 
         public DishHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mNameTextView = (TextView) itemView;
+            mDishNameTextView = (TextView) itemView.findViewById(R.id.list_item_dish_name);
+            mDishAllergensTextView = (TextView) itemView.findViewById(R.id.list_item_dish_allergens);
+            mDishPriceTextView = (TextView) itemView.findViewById(R.id.list_item_dish_price);
         }
 
         public void bindDish(Dish dish) {
             mDish = dish;
-            mNameTextView.setText(mDish.getName());
+            mDishNameTextView.setText(mDish.getName());
+            StringBuilder allergenListBuilder = new StringBuilder();
+            List<Allergen> allergenList = mDish.getAllergens();
+            int i=1;
+            for (Allergen allergen: allergenList) {
+                allergenListBuilder.append(allergen.getName());
+                if (i++ == allergenList.size()) {
+                    allergenListBuilder.append(".");
+                } else {
+                    allergenListBuilder.append(", ");
+                }
+            }
+            mDishAllergensTextView.setText(allergenListBuilder.toString());
+            mDishPriceTextView.setText(Double.toString(mDish.getPrice()) + " €");
         }
 
         @Override
@@ -179,7 +198,7 @@ public class DishListFragment extends Fragment {
         @Override
         public DishHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            View view = layoutInflater.inflate(R.layout.list_item_dish, parent, false);
             return new DishHolder(view);
         }
 
