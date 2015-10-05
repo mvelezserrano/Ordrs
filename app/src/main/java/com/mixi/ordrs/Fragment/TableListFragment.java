@@ -1,6 +1,5 @@
 package com.mixi.ordrs.Fragment;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,7 +39,7 @@ public class TableListFragment extends Fragment {
     private TableAdapter mAdapter;
 
     public interface OnMenuListDownloaded {
-        public void menuListHasDownloaded();
+        void menuListHasDownloaded();
     }
 
     @Override
@@ -61,7 +60,9 @@ public class TableListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        new FetchDishesTask().execute();
+        if (MenuList.get(getActivity()).getDishes().size()== 0) {
+            new FetchDishesTask().execute();
+        }
     }
 
     @Nullable
@@ -151,7 +152,7 @@ public class TableListFragment extends Fragment {
             } catch (IllegalArgumentException ex) {
                 // Android bug can sometimes cause this
             }
-            
+
             if (dishes == null) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                 alert.setMessage(R.string.error_downloading_dishes);

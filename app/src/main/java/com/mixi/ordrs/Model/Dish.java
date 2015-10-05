@@ -78,4 +78,17 @@ public class Dish {
     /*public String getRequest() {
         return mRequest;
     }*/
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof Dish))return false;
+        Dish otherDish = (Dish)other;
+        if (this.getId() == otherDish.getId()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

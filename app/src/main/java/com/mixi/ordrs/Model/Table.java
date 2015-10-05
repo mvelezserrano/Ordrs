@@ -1,6 +1,7 @@
 package com.mixi.ordrs.Model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,9 +33,16 @@ public class Table {
     }
 
     public void removeDish (int id) {
-        for (Dishtable dish: mDishes) {
+        /*for (Dishtable dish: mDishes) {
             if (dish.getId() == id) {
                 mDishes.remove(dish);
+            }
+        }*/
+        for (Iterator<Dishtable> iterator = mDishes.iterator(); iterator.hasNext();) {
+            Dishtable dishtable = iterator.next();
+            if (dishtable.getId()== id) {
+                // Remove the current element from the iterator and the list.
+                iterator.remove();
             }
         }
     }

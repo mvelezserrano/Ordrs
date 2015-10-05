@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.widget.Toast;
 
 import com.mixi.ordrs.Fragment.DishFragment;
 import com.mixi.ordrs.Fragment.DishListFragment;
-import com.mixi.ordrs.Fragment.TableListFragment;
 import com.mixi.ordrs.Model.Table;
 import com.mixi.ordrs.Model.TableSet;
 import com.mixi.ordrs.R;
@@ -42,10 +40,8 @@ public class DishListActivity extends SingleFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("Entramos en el onActivyResult de DishListActivity");
         if (requestCode == REQUEST_MENU_DISH) {
             if (resultCode == Activity.RESULT_OK) {
-                System.out.println("Seleccionamos un plato!!!");
                 DishListFragment fragment = (DishListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
                 fragment.addDish(
                         data.getExtras().getInt(DishFragment.EXTRA_SELECTED_DISH_ID),
@@ -53,7 +49,6 @@ public class DishListActivity extends SingleFragmentActivity {
             }
         } else if (requestCode == REQUEST_TABLE_DISH) {
             if (resultCode == Activity.RESULT_OK) {
-                System.out.println("Borramos plato???");
                 DishListFragment fragment = (DishListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
                 fragment.removeDish(data.getExtras().getInt(DishFragment.EXTRA_SELECTED_DISH_ID));
             }

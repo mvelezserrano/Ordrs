@@ -19,11 +19,9 @@ import android.widget.TextView;
 import com.mixi.ordrs.Model.Allergen;
 import com.mixi.ordrs.Model.Dish;
 import com.mixi.ordrs.Model.MenuList;
-import com.mixi.ordrs.Model.TableSet;
 import com.mixi.ordrs.R;
 
 import java.util.List;
-import java.util.UUID;
 
 public class DishFragment extends Fragment {
 
