@@ -10,4 +10,6 @@
     <string name="remove_from_order_button">Remove from order</string>
     <string name="get_bill">Get Bill</string>
     <string name="bill_dialog_title">To Pay:</string>
+    <string name="retry_download_button">Retry</string>
+    <string name="error_downloading_dishes">Error downloading dishes.</string>
 </resources>

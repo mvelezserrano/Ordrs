@@ -2,12 +2,14 @@ package com.mixi.ordrs.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -91,35 +93,10 @@ public class TableListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        /*inflater.inflate(R.menu.fragment_crime_list, menu);
-
-        MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
-        if (mSubtitleVisible) {
-            subtitleItem.setTitle(R.string.hide_subtitle);
-        } else {
-            subtitleItem.setTitle(R.string.show_subtitle);
-        }*/
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*switch (item.getItemId()) {
-            case R.id.menu_item_new_crime:
-                Crime crime = new Crime();
-                CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-                startActivity(intent);
-                return true;
-
-            case R.id.menu_item_show_subtitle:
-                mSubtitleVisible = !mSubtitleVisible;
-                getActivity().invalidateOptionsMenu();
-                updateSubtitle();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -156,21 +133,23 @@ public class TableListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Dish> dishes) {
-
-            MenuList menuList = MenuList.get(getActivity());
-            menuList.setDishes(dishes);
-            menuList.setMenuDownloaded(true);
-            mCallback.menuListHasDownloaded();
-            /*
-            Handler showAddButton = new Handler();
-            showAddButton.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    MenuList menuList = MenuList.get(getActivity());
-                    menuList.setMenuDownloaded(true);
-                    mCallback.menuListHasDownloaded();
-                }
-            }, 5000);*/
+            if (dishes == null) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setMessage(R.string.error_downloading_dishes);
+                alert.setCancelable(false);
+                alert.setNegativeButton(R.string.retry_download_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new FetchDishesTask().execute();
+                    }
+                });
+                alert.show();
+            } else {
+                MenuList menuList = MenuList.get(getActivity());
+                menuList.setDishes(dishes);
+                menuList.setMenuDownloaded(true);
+                mCallback.menuListHasDownloaded();
+            }
         }
     }
 

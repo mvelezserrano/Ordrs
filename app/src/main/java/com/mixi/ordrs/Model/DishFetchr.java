@@ -54,13 +54,16 @@ public class DishFetchr {
             //Log.i(TAG, "Received JSON: " + jsonString);
             JSONObject jsonBody = new JSONObject(jsonString);
             parseDishes(dishes, jsonBody);
+
+            return dishes;
+            
         } catch (JSONException je) {
             Log.e(TAG, "Failed to parse JSON", je);
         } catch (IOException ioe) {
             Log.e(TAG, "Failed to fetch dishes", ioe);
         }
 
-        return dishes;
+        return null;
     }
 
     private void parseDishes(List<Dish> dishes, JSONObject jsonBody) throws IOException, JSONException {
