@@ -1,6 +1,7 @@
 package com.mixi.ordrs.Fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -126,6 +127,18 @@ public class TableListFragment extends Fragment {
 
     private class FetchDishesTask extends AsyncTask<Void, Void, List<Dish>> {
 
+        private ProgressDialog mProgressDialog;
+
+
+        @Override
+        protected void onPreExecute() {
+            //mContainer.setAlpha(0.0f);
+
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setTitle(R.string.downloading_dishes);
+            mProgressDialog.show();
+        }
+
         @Override
         protected List<Dish> doInBackground(Void... params) {
             return new DishFetchr().fetchDishes();
@@ -133,6 +146,12 @@ public class TableListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Dish> dishes) {
+            try {
+                mProgressDialog.dismiss();
+            } catch (IllegalArgumentException ex) {
+                // Android bug can sometimes cause this
+            }
+            
             if (dishes == null) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                 alert.setMessage(R.string.error_downloading_dishes);

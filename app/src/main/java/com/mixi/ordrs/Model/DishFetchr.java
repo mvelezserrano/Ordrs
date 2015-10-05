@@ -56,7 +56,7 @@ public class DishFetchr {
             parseDishes(dishes, jsonBody);
 
             return dishes;
-            
+
         } catch (JSONException je) {
             Log.e(TAG, "Failed to parse JSON", je);
         } catch (IOException ioe) {
